@@ -213,18 +213,14 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="mb-4">
-                                        <span class="badge badge-soft-primary float-end">Daily</span>
+                                        <span class="badge badge-soft-primary float-end">Real-Time</span>
                                         <h5 class="card-title mb-0">Shade Net Control</h5>
                                     </div>
                                     <div class="row d-flex align-items-center mb-4">
                                         <div class="col-8">
-                                            <h2 class="d-flex align-items-center mb-0">
-                                                In Progress
+                                            <h2 id="shade-net-status" class="d-flex align-items-center mb-0">
+                                                Loading...
                                             </h2>
-                                        </div>
-                                        <div class="col-4 text-end">
-                                            <span class="text-muted">12.5% <i
-                                                    class="mdi mdi-arrow-up text-success"></i></span>
                                         </div>
                                     </div>
 
@@ -241,18 +237,14 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="mb-4">
-                                        <span class="badge badge-soft-primary float-end">Per Week</span>
+                                        <span class="badge badge-soft-primary float-end">Real-Time</span>
                                         <h5 class="card-title mb-0">pH Downer</h5>
                                     </div>
                                     <div class="row d-flex align-items-center mb-4">
                                         <div class="col-8">
-                                            <h2 class="d-flex align-items-center mb-0">
-                                                In Progress
+                                            <h2 id="ph-downer-status" class="d-flex align-items-center mb-0">
+                                                Loading...
                                             </h2>
-                                        </div>
-                                        <div class="col-4 text-end">
-                                            <span class="text-muted">18.71% <i
-                                                    class="mdi mdi-arrow-down text-danger"></i></span>
                                         </div>
                                     </div>
 
@@ -269,18 +261,14 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="mb-4">
-                                        <span class="badge badge-soft-primary float-end">Per Month</span>
+                                        <span class="badge badge-soft-primary float-end">Real-Time</span>
                                         <h5 class="card-title mb-0">Misting Process</h5>
                                     </div>
                                     <div class="row d-flex align-items-center mb-4">
                                         <div class="col-8">
-                                            <h2 class="d-flex align-items-center mb-0">
-                                                OFF
+                                            <h2 id="misting-process-status" class="d-flex align-items-center mb-0">
+                                                Loading...
                                             </h2>
-                                        </div>
-                                        <div class="col-4 text-end">
-                                            <span class="text-muted">57% <i
-                                                    class="mdi mdi-arrow-up text-success"></i></span>
                                         </div>
                                     </div>
 
@@ -298,18 +286,14 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="mb-4">
-                                        <span class="badge badge-soft-primary float-end">All Time</span>
+                                        <span class="badge badge-soft-primary float-end">Real-Time</span>
                                         <h5 class="card-title mb-0">System Status</h5>
                                     </div>
                                     <div class="row d-flex align-items-center mb-4">
                                         <div class="col-8">
-                                            <h2 class="d-flex align-items-center mb-0">
-                                                ON
+                                            <h2 id="system-status" class="d-flex align-items-center mb-0">
+                                                Loading...
                                             </h2>
-                                        </div>
-                                        <div class="col-4 text-end">
-                                            <span class="text-muted">ON <i
-                                                    class="mdi mdi-arrow-down text-danger"></i></span>
                                         </div>
                                     </div>
 
@@ -323,17 +307,216 @@
                     </div>
                     <!-- end row-->
 
-
                     <div class="row">
-                        <div class="col-lg-4">
+                        <div class="col-md-6 col-xl-3">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="card-title">Water Level</h4>
-                                    <p class="card-subtitle mb-4">For the past 14 days</p>
-                                    <div id="morris-bar-example" class="morris-chart"></div>
-                                </div> <!--end card body-->
+                                    <div class="mb-4">
+                                        <span class="badge badge-soft-primary float-end">Real-Time</span>
+                                        <h5 class="card-title mb-0">Luminous Flux</h5>
+                                    </div>
+                                    <div class="row d-flex align-items-center mb-4">
+                                        <div class="col-8">
+                                            <h2 id="luminous-flux-real" class="d-flex align-items-center mb-0">
+                                                Loading...
+                                            </h2>
+                                        </div>
+                                    </div>
+
+                                    <div class="progress shadow-sm" style="height: 5px;">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: 57%;">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end card body-->
+                            </div><!-- end card-->
+                        </div> <!-- end col-->
+
+                        <div class="col-md-6 col-xl-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="mb-4">
+                                        <span class="badge badge-soft-primary float-end">Real-Time</span>
+                                        <h5 class="card-title mb-0">pH Level</h5>
+                                    </div>
+                                    <div class="row d-flex align-items-center mb-4">
+                                        <div class="col-8">
+                                            <h2 id="ph-level-real" class="d-flex align-items-center mb-0">
+                                                Loading...
+                                            </h2>
+                                        </div>
+                                    </div>
+
+                                    <div class="progress shadow-sm" style="height: 5px;">
+                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 57%;">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end card body-->
+                            </div><!-- end card-->
+                        </div> <!-- end col-->
+
+                        <div class="col-md-6 col-xl-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="mb-4">
+                                        <span class="badge badge-soft-primary float-end">Real-Time</span>
+                                        <h5 class="card-title mb-0">TDS Level</h5>
+                                    </div>
+                                    <div class="row d-flex align-items-center mb-4">
+                                        <div class="col-8">
+                                            <h2 id="tds-level-real" class="d-flex align-items-center mb-0">
+                                                Loading...
+                                            </h2>
+                                        </div>
+                                    </div>
+
+                                    <div class="progress shadow-sm" style="height: 5px;">
+                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 57%;">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end card body-->
+                            </div>
+                            <!--end card-->
+                        </div> <!-- end col-->
+
+                        <div class="col-md-6 col-xl-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="mb-4">
+                                        <span class="badge badge-soft-primary float-end">Real-Time</span>
+                                        <h5 class="card-title mb-0">Harvested Power</h5>
+                                    </div>
+                                    <div class="row d-flex align-items-center mb-4">
+                                        <div class="col-8">
+                                            <h2 id="harvested-power" class="d-flex align-items-center mb-0">
+                                                Loading...
+                                            </h2>
+                                        </div>
+                                    </div>
+
+                                    <div class="progress shadow-sm" style="height: 5px;">
+                                        <div class="progress-bar bg-info" role="progressbar" style="width: 57%;"></div>
+                                    </div>
+                                </div>
+                                <!--end card body-->
+                            </div><!-- end card-->
+                        </div> <!-- end col-->
+                    </div>
+                    <!-- end row-->
+
+                    <div class="row">
+                        <div class="col-md-6 col-xl-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="mb-4">
+                                        <span class="badge badge-soft-primary float-end">Real-Time</span>
+                                        <h5 class="card-title mb-0">Water Pump Consumption</h5>
+                                    </div>
+                                    <div class="row d-flex align-items-center mb-4">
+                                        <div class="col-8">
+                                            <h2 id="water-pump-consumption" class="d-flex align-items-center mb-0">
+                                                Loading...
+                                            </h2>
+                                        </div>
+                                    </div>
+
+                                    <div class="progress shadow-sm" style="height: 5px;">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: 57%;">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end card body-->
+                            </div><!-- end card-->
+                        </div> <!-- end col-->
+
+                        <div class="col-md-6 col-xl-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="mb-4">
+                                        <span class="badge badge-soft-primary float-end">Real-Time</span>
+                                        <h5 class="card-title mb-0">Misting Consumption</h5>
+                                    </div>
+                                    <div class="row d-flex align-items-center mb-4">
+                                        <div class="col-8">
+                                            <h2 id="misting-consumption" class="d-flex align-items-center mb-0">
+                                                Loading...
+                                            </h2>
+                                        </div>
+                                    </div>
+
+                                    <div class="progress shadow-sm" style="height: 5px;">
+                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 57%;">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end card body-->
+                            </div><!-- end card-->
+                        </div> <!-- end col-->
+
+                        <div class="col-md-6 col-xl-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="mb-4">
+                                        <span class="badge badge-soft-primary float-end">Real-Time</span>
+                                        <h5 class="card-title mb-0">Shade Net Consumption</h5>
+                                    </div>
+                                    <div class="row d-flex align-items-center mb-4">
+                                        <div class="col-8">
+                                            <h2 id="shade-net-consumption" class="d-flex align-items-center mb-0">
+                                                Loading...
+                                            </h2>
+                                        </div>
+                                    </div>
+
+                                    <div class="progress shadow-sm" style="height: 5px;">
+                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 57%;">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end card body-->
+                            </div>
+                            <!--end card-->
+                        </div> <!-- end col-->
+
+                        <div class="col-md-6 col-xl-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="mb-4">
+                                        <span class="badge badge-soft-primary float-end">Real-Time</span>
+                                        <h5 class="card-title mb-0">Overall Power Consumption</h5>
+                                    </div>
+                                    <div class="row d-flex align-items-center mb-4">
+                                        <div class="col-8">
+                                            <h2 id="overall-power-consumption" class="d-flex align-items-center mb-0">
+                                                Loading...
+                                            </h2>
+                                        </div>
+                                    </div>
+
+                                    <div class="progress shadow-sm" style="height: 5px;">
+                                        <div class="progress-bar bg-info" role="progressbar" style="width: 57%;"></div>
+                                    </div>
+                                </div>
+                                <!--end card body-->
+                            </div><!-- end card-->
+                        </div> <!-- end col-->
+                    </div>
+                    <!-- end row-->
+                    
+                    <div class="row">
+                        <div class="col-xl-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="header-title">Real-time Battery Percentage</h4>
+
+                                    <div id="cardCollpase23" class="collapse show" dir="ltr">
+                                        <div id="apex-radialbar-3" class="apex-charts pt-3" data-colors="#f1556c"></div>
+                                    </div> <!-- collapsed end -->
+                                </div> <!-- end card-body -->
                             </div> <!-- end card-->
-                        </div> <!-- end col -->
+                        </div> <!-- end col-->
 
                         <div class="col-lg-4">
                             <div class="card">
@@ -345,22 +528,16 @@
                                         <input data-plugin="knob" data-width="165" data-height="165" data-linecap=round
                                             data-fgColor="#7a08c2" value="95" data-skin="tron" data-angleOffset="180"
                                             data-readOnly=true data-thickness=".15" />
-                                        <h5 class="text-muted mt-3">Total sales made today</h5>
-
-
-                                        <p class="text-muted w-75 mx-auto sp-line-2">Traditional heading
-                                            elements are
-                                            designed to work best in the meat of your page content.</p>
 
                                         <div class="row mt-3">
                                             <div class="col-6">
-                                                <p class="text-muted font-15 mb-1 text-truncate">Target</p>
-                                                <h4><i class="fas fa-arrow-up text-success me-1"></i>$7.8k</h4>
+                                                <p class="text-muted font-15 mb-1 text-truncate">Minimum Target Range</p>
+                                                <h4><i class="fas fa-arrow-up text-success me-1"></i>27</h4>
 
                                             </div>
                                             <div class="col-6">
-                                                <p class="text-muted font-15 mb-1 text-truncate">Last week</p>
-                                                <h4><i class="fas fa-arrow-down text-danger me-1"></i>$1.4k</h4>
+                                                <p class="text-muted font-15 mb-1 text-truncate">Maximum Target Range</p>
+                                                <h4><i class="fas fa-arrow-down text-danger me-1"></i>30</h4>
                                             </div>
 
                                         </div>
@@ -379,22 +556,16 @@
                                         <input data-plugin="knob" data-width="165" data-height="165" data-linecap=round
                                             data-fgColor="#7a08c2" value="95" data-skin="tron" data-angleOffset="180"
                                             data-readOnly=true data-thickness=".15" />
-                                        <h5 class="text-muted mt-3">Total sales made today</h5>
-
-
-                                        <p class="text-muted w-75 mx-auto sp-line-2">Traditional heading
-                                            elements are
-                                            designed to work best in the meat of your page content.</p>
 
                                         <div class="row mt-3">
                                             <div class="col-6">
-                                                <p class="text-muted font-15 mb-1 text-truncate">Target</p>
-                                                <h4><i class="fas fa-arrow-up text-success me-1"></i>$7.8k</h4>
+                                                <p class="text-muted font-15 mb-1 text-truncate">Minimum Target Range</p>
+                                                <h4><i class="fas fa-arrow-up text-success me-1"></i>65</h4>
 
                                             </div>
                                             <div class="col-6">
-                                                <p class="text-muted font-15 mb-1 text-truncate">Last week</p>
-                                                <h4><i class="fas fa-arrow-down text-danger me-1"></i>$1.4k</h4>
+                                                <p class="text-muted font-15 mb-1 text-truncate">Maximum Target Range</p>
+                                                <h4><i class="fas fa-arrow-down text-danger me-1"></i>85</h4>
                                             </div>
 
                                         </div>
@@ -432,6 +603,36 @@
 
                                     <div id="cardCollpase4" class="collapse show" dir="ltr">
                                         <div id="apex-area" class="apex-charts pt-3" data-colors="#00acc1,#f7b84b,#CED4DC"></div>
+                                    </div> <!-- collapsed end -->
+                                </div> <!-- end card-body -->
+                            </div> <!-- end card-->
+                        </div> <!-- end col-->
+                    </div>
+                    <!-- end row -->
+                    <div class="row">
+
+
+
+                        <div class="col-xl-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="header-title">Water Pump, Misting, Shade Net Consumption</h4>
+
+                                    <div id="cardCollpase5" class="collapse show" dir="ltr">
+                                        <div id="apex-column-1" class="apex-charts pt-3" data-colors="#00acc1,#1abc9c,#CED4DC"></div>
+                                    </div> <!-- collapsed end -->
+                                </div> <!-- end card-body -->
+                            </div> <!-- end card-->
+                        </div> <!-- end col-->
+
+                        <div class="col-xl-6">
+                            <!-- Portlet card -->
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="header-title">Battery History, Total Harvested & Overall System Power Consumption</h4>
+
+                                    <div id="cardCollpase10" class="collapse show" dir="ltr">
+                                        <div id="apex-mixed-2" class="apex-charts pt-3" data-colors="#00acc1,#1abc9c,#f672a7"></div>
                                     </div> <!-- collapsed end -->
                                 </div> <!-- end card-body -->
                             </div> <!-- end card-->
@@ -494,6 +695,278 @@
 
         <!-- Demo js -->
         <script src="assets/js/pages/apexcharts.js"></script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                // Function to fetch the status of a component
+                function fetchComponentStatus(component, elementId) {
+                    fetch(`/api/component-status/${component}`, {
+                        headers: {
+                            'Accept': 'application/json',  // Expect JSON response
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(`API Response for ${component}:`, data); // Log the data for debugging
+            
+                        // Get the element where we will display the component status
+                        const componentStatusElement = document.getElementById(elementId);
+            
+                        // Check if we received an array and it has at least one entry
+                        if (Array.isArray(data) && data.length > 0) {
+                            // Sort the data by timestamp to get the latest entry, if not already sorted
+                            data.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            
+                            // Get the first entry, which should be the latest one
+                            const latestEntry = data[0];
+                            
+                            // Set the status text based on the latest entry from the backend
+                            componentStatusElement.textContent = latestEntry.status || 'Unknown';
+                        } else {
+                            componentStatusElement.textContent = 'Unknown';
+                        }
+                    })
+                    .catch(error => {
+                        console.error(`Error fetching ${component} status:`, error);
+                        document.getElementById(elementId).textContent = 'Error';
+                    });
+                }
+            
+                // Fetch the statuses immediately on page load for all components
+                fetchComponentStatus('shade_net', 'shade-net-status');
+                fetchComponentStatus('ph_downer', 'ph-downer-status');
+                fetchComponentStatus('misting_process', 'misting-process-status');
+                fetchComponentStatus('system_status', 'system-status');
+                
+            
+                // Set up polling to fetch the statuses every 5 seconds (5000 ms)
+                setInterval(() => fetchComponentStatus('shade_net', 'shade-net-status'), 5000);
+                setInterval(() => fetchComponentStatus('ph_downer', 'ph-downer-status'), 5000);
+                setInterval(() => fetchComponentStatus('misting_process', 'misting-process-status'), 5000);
+                setInterval(() => fetchComponentStatus('system_status', 'system-status'), 5000);
+            });
+            </script>
+            
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    // Function to fetch the status of a component
+                    function fetchComponentStatus(component, elementId) {
+                        fetch(`/api/component-status/${component}`, {
+                            headers: {
+                                'Accept': 'application/json',  // Expect JSON response
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(`API Response for ${component}:`, data); // Log the data for debugging
+            
+                            // Get the element where we will display the component status
+                            const componentStatusElement = document.getElementById(elementId);
+            
+                            // Check if we received an array and it has at least one entry
+                            if (Array.isArray(data) && data.length > 0) {
+                                // Sort the data by timestamp to get the latest entry, if not already sorted
+                                data.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            
+                                // Get the first entry, which should be the latest one
+                                const latestEntry = data[0];
+                                
+                                // Set the status text based on the latest entry from the backend
+                                componentStatusElement.textContent = latestEntry.status || 'Unknown';
+                            } else {
+                                componentStatusElement.textContent = 'Unknown';
+                            }
+                        })
+                        .catch(error => {
+                            console.error(`Error fetching ${component} status:`, error);
+                            document.getElementById(elementId).textContent = 'Error';
+                        });
+                    }
+            
+                    // Fetch the statuses immediately on page load for all components
+                    fetchComponentStatus('shade_net', 'shade-net-status');
+                    fetchComponentStatus('ph_downer', 'ph-downer-status');
+                    fetchComponentStatus('misting_process', 'misting-process-status');
+                    fetchComponentStatus('system_status', 'system-status');
+                    
+                    // Set up polling to fetch the statuses every 5 seconds (5000 ms)
+                    setInterval(() => fetchComponentStatus('shade_net', 'shade-net-status'), 5000);
+                    setInterval(() => fetchComponentStatus('ph_downer', 'ph-downer-status'), 5000);
+                    setInterval(() => fetchComponentStatus('misting_process', 'misting-process-status'), 5000);
+                    setInterval(() => fetchComponentStatus('system_status', 'system-status'), 5000);
+                });
+            </script>
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    // Function to fetch the latest sensor data by sensor name and update the corresponding element
+                    function fetchSensorData(sensor, elementId) {
+                        fetch(`/api/sensor-data/${sensor}`, {
+                            headers: {
+                                'Accept': 'application/json',  // Expect JSON response
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(`API Response for ${sensor}:`, data); // Log the data for debugging
+                
+                            // Get the element where we will display the sensor value
+                            const sensorElement = document.getElementById(elementId);
+                
+                            // Check if we received an array and it has at least one entry
+                            if (Array.isArray(data) && data.length > 0) {
+                                // Get the latest entry (since the data is sorted by timestamp DESC, the first entry is the latest)
+                                const latestEntry = data[0];
+                                
+                                // Set the sensor value based on the latest entry from the backend
+                                sensorElement.textContent = latestEntry.value || 'Unknown';
+                            } else {
+                                sensorElement.textContent = 'Unknown';
+                            }
+                        })
+                        .catch(error => {
+                            console.error(`Error fetching ${sensor} data:`, error);
+                            document.getElementById(elementId).textContent = 'Error';
+                        });
+                    }
+                
+                    // Fetch the data immediately on page load for all sensors
+                    fetchSensorData('light_sensor', 'luminous-flux-real');  // Correct mapping to light_sensor
+                    fetchSensorData('ph_sensor', 'ph-level-real');  // Ensure the ID matches
+                    fetchSensorData('tds', 'tds-level-real');  // Correct mapping to tds-level-real
+                    fetchSensorData('battery_history', 'battery-level-real');
+                
+                    // Set up polling to fetch the sensor data every 5 seconds (5000 ms)
+                    setInterval(() => fetchSensorData('light_sensor', 'luminous-flux-real'), 5000);  // Polling light_sensor for luminous flux
+                    setInterval(() => fetchSensorData('ph_sensor', 'ph-level-real'), 5000);  // Polling for ph level
+                    setInterval(() => fetchSensorData('tds', 'tds-level-real'), 5000);  // Polling tds for TDS level
+                    setInterval(() => fetchSensorData('battery_history', 'battery-level-real'), 5000);
+                });
+                </script><script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Function to fetch power consumption data by metric type and update the corresponding element
+        function fetchPowerConsumption(metricType, elementId) {
+            fetch(`/api/${metricType}`, {
+                headers: {
+                    'Accept': 'application/json',  // Expect JSON response
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(`API Response for ${metricType}:`, data); // Log the data for debugging
+                
+                // Get the element where we will display the metric value
+                const metricElement = document.getElementById(elementId);
+                
+                // Check if we received an array of data and if it has at least one entry
+                if (Array.isArray(data) && data.length > 0) {
+                    // Get the latest entry (first element) since data is ordered by timestamp DESC
+                    const latestEntry = data[0];
+                    
+                    // Display the metric value
+                    metricElement.textContent = `${latestEntry.metric_value} W` || 'Unknown';
+                } else {
+                    metricElement.textContent = 'Unknown';
+                }
+            })
+            .catch(error => {
+                console.error(`Error fetching ${metricType} data:`, error);
+                document.getElementById(elementId).textContent = 'Error';
+            });
+        }
+
+        // Fetch the latest data for all power consumption metrics on page load
+        fetchPowerConsumption('water-pump-consumption', 'water-pump-consumption');
+        fetchPowerConsumption('misting-consumption', 'misting-consumption');
+        fetchPowerConsumption('shade-net-consumption', 'shade-net-consumption');
+        fetchPowerConsumption('system-power-consumption', 'overall-power-consumption');
+        fetchPowerConsumption('harvested-power', 'harvested-power');
+
+        // Set up polling to fetch the latest power consumption data every 5 seconds (5000 ms)
+        setInterval(() => fetchPowerConsumption('water-pump-consumption', 'water-pump-consumption'), 5000);
+        setInterval(() => fetchPowerConsumption('misting-consumption', 'misting-consumption'), 5000);
+        setInterval(() => fetchPowerConsumption('shade-net-consumption', 'shade-net-consumption'), 5000);
+        setInterval(() => fetchPowerConsumption('system-power-consumption', 'overall-power-consumption'), 5000);
+        setInterval(() => fetchPowerConsumption('harvested-power', 'harvested-power'), 5000);
+    });
+</script>
+
+<script>
+    // Chart options
+    var options = {
+        chart: {
+            type: 'radialBar',  // Radial bar type for circular gauge
+            height: 350,  // Height of the chart
+        },
+        series: [70],  // Initial value, you can change this dynamically
+        plotOptions: {
+            radialBar: {
+                hollow: {
+                    size: '70%',  // Size of the inner hollow area
+                },
+                track: {
+                    show: true,  // Show the track (background stroke)
+                    strokeWidth: '100%',  // Stroke width of the track
+                    background: '#e0e0e0',  // Background color of the track
+                    opacity: 0.5,  // Opacity of the track
+                },
+                dataLabels: {
+                    show: true,
+                    name: {
+                        offsetY: -10,  // Name position
+                        show: true,
+                        color: '#888',
+                        fontSize: '17px'
+                    },
+                    value: {
+                        color: '#111',
+                        fontSize: '36px',  // Size of the value text
+                        show: true,
+                        formatter: function (val) {  // Custom formatter for value
+                            return val + "%";
+                        }
+                    }
+                }
+            }
+        },
+        fill: {
+            type: 'gradient',  // Gradient fill for the stroke
+            gradient: {
+                shade: 'dark',
+                type: 'horizontal',
+                shadeIntensity: 0.5,
+                gradientToColors: ['#87D4F9'],  // Gradient end color
+                inverseColors: false,
+                opacityFrom: 1,
+                opacityTo: 1,
+                stops: [0, 100]
+            }
+        },
+        stroke: {
+            lineCap: 'round'  // Stroke ends in rounded fashion
+        },
+        labels: ['Progress']  // Label for the radial bar
+    };
+
+    // Create the chart
+    var chart = new ApexCharts(document.querySelector("#circularGauge"), options);
+
+    // Render the chart
+    chart.render();
+
+    // Example of updating the chart dynamically
+    setTimeout(function () {
+        chart.updateSeries([85]);  // Change value to 85% after 3 seconds
+    }, 3000);
+</script>
+
+                    
+            
+                
+            
+            
+            
+            
+            
     
 </body>
 

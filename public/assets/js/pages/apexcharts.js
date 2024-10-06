@@ -1591,7 +1591,7 @@ var colors = ["#00acc1", "#1abc9c"],
         },
         colors: colors = dataColors ? dataColors.split(",") : colors,
         series: [67],
-        labels: ["Median Ratio"],
+        labels: ["Battery Percentage"],
         responsive: [{
             breakpoint: 380,
             options: {
