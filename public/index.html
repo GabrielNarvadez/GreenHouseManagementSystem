@@ -523,27 +523,68 @@
                                 <div class="card-body">
                                     <h4 class="card-title">Temperature</h4>
                                     <p class="card-subtitle mb-4">Real-time Data</p>
-
+                            
                                     <div class="text-center">
-                                        <input data-plugin="knob" data-width="165" data-height="165" data-linecap=round
-                                            data-fgColor="#7a08c2" value="95" data-skin="tron" data-angleOffset="180"
-                                            data-readOnly=true data-thickness=".15" />
-
+                                        <!-- Dynamic Temperature Knob -->
+                                        <input id="temperature-knob" data-plugin="knob" data-width="165" data-height="165" data-linecap="round"
+                                            data-fgColor="#7a08c2" value="0" data-skin="tron" data-angleOffset="180"
+                                            data-readOnly="true" data-thickness=".15" />
+                            
                                         <div class="row mt-3">
                                             <div class="col-6">
                                                 <p class="text-muted font-15 mb-1 text-truncate">Minimum Target Range</p>
                                                 <h4><i class="fas fa-arrow-up text-success me-1"></i>27</h4>
-
                                             </div>
                                             <div class="col-6">
                                                 <p class="text-muted font-15 mb-1 text-truncate">Maximum Target Range</p>
                                                 <h4><i class="fas fa-arrow-down text-danger me-1"></i>30</h4>
                                             </div>
-
                                         </div>
                                     </div>
-                                </div> <!--end card body-->
+                                </div> <!-- end card body-->
                             </div> <!-- end card-->
+                            
+                            <script>
+                                document.addEventListener("DOMContentLoaded", function () {
+                                    // Function to fetch the latest temperature data
+                                    function fetchTemperatureData() {
+                                        fetch('/api/sensor-data/temp', {
+                                            headers: {
+                                                'Accept': 'application/json'
+                                            }
+                                        })
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            // Check if data exists and process it
+                                            if (Array.isArray(data) && data.length > 0) {
+                                                // Sort data by timestamp (descending) to get the latest entry
+                                                const latestEntry = data.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))[0];
+                            
+                                                // Extract the latest temperature value
+                                                const latestTemp = parseFloat(latestEntry.value);
+                            
+                                                // Update the knob with the latest temperature value
+                                                $("#temperature-knob").val(latestTemp).trigger('change');
+                                            } else {
+                                                console.error('No temperature data available');
+                                            }
+                                        })
+                                        .catch(error => {
+                                            console.error('Error fetching temperature data:', error);
+                                        });
+                                    }
+                            
+                                    // Initialize knob plugin
+                                    $("[data-plugin='knob']").knob();
+                            
+                                    // Fetch temperature data on page load
+                                    fetchTemperatureData();
+                            
+                                    // Optionally, set up polling to refresh the temperature data every 10 seconds
+                                    setInterval(fetchTemperatureData, 10000); // Refresh every 10 seconds
+                                });
+                            </script>
+                            
                         </div> <!-- end col -->
 
                         <div class="col-lg-4">
@@ -551,28 +592,68 @@
                                 <div class="card-body">
                                     <h4 class="card-title">Humidity</h4>
                                     <p class="card-subtitle mb-4">Real-time Data</p>
-
+                            
                                     <div class="text-center">
-                                        <input data-plugin="knob" data-width="165" data-height="165" data-linecap=round
-                                            data-fgColor="#7a08c2" value="95" data-skin="tron" data-angleOffset="180"
-                                            data-readOnly=true data-thickness=".15" />
-
+                                        <!-- Dynamic Humidity Knob -->
+                                        <input id="humidity-knob" data-plugin="knob" data-width="165" data-height="165" data-linecap="round"
+                                            data-fgColor="#7a08c2" value="0" data-skin="tron" data-angleOffset="180"
+                                            data-readOnly="true" data-thickness=".15" />
+                            
                                         <div class="row mt-3">
                                             <div class="col-6">
                                                 <p class="text-muted font-15 mb-1 text-truncate">Minimum Target Range</p>
                                                 <h4><i class="fas fa-arrow-up text-success me-1"></i>65</h4>
-
                                             </div>
                                             <div class="col-6">
                                                 <p class="text-muted font-15 mb-1 text-truncate">Maximum Target Range</p>
                                                 <h4><i class="fas fa-arrow-down text-danger me-1"></i>85</h4>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div> <!--end card body-->
-                                <!--end card body-->
                             </div>
+                            
+                            <script>
+                                document.addEventListener("DOMContentLoaded", function () {
+                                    // Function to fetch the latest humidity data
+                                    function fetchHumidityData() {
+                                        fetch('http://localhost:3000/api/sensor-data/humidity', {
+                                            headers: {
+                                                'Accept': 'application/json'
+                                            }
+                                        })
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            // Check if data exists and process it
+                                            if (Array.isArray(data) && data.length > 0) {
+                                                // Sort data by timestamp (descending) to get the latest entry
+                                                const latestEntry = data.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))[0];
+                            
+                                                // Extract the latest humidity value
+                                                const latestHumidity = parseFloat(latestEntry.value);
+                            
+                                                // Update the knob with the latest humidity value
+                                                $("#humidity-knob").val(latestHumidity).trigger('change');
+                                            } else {
+                                                console.error('No humidity data available');
+                                            }
+                                        })
+                                        .catch(error => {
+                                            console.error('Error fetching humidity data:', error);
+                                        });
+                                    }
+                            
+                                    // Initialize knob plugin
+                                    $("[data-plugin='knob']").knob();
+                            
+                                    // Fetch humidity data on page load
+                                    fetchHumidityData();
+                            
+                                    // Optionally, set up polling to refresh the humidity data every 10 seconds
+                                    setInterval(fetchHumidityData, 10000); // Refresh every 10 seconds
+                                });
+                            </script>
+                            
                             <!--end card-->
 
                         </div><!-- end col -->
@@ -833,13 +914,11 @@
                     fetchSensorData('light_sensor', 'luminous-flux-real');  // Correct mapping to light_sensor
                     fetchSensorData('ph_sensor', 'ph-level-real');  // Ensure the ID matches
                     fetchSensorData('tds', 'tds-level-real');  // Correct mapping to tds-level-real
-                    fetchSensorData('battery_history', 'battery-level-real');
                 
                     // Set up polling to fetch the sensor data every 5 seconds (5000 ms)
                     setInterval(() => fetchSensorData('light_sensor', 'luminous-flux-real'), 5000);  // Polling light_sensor for luminous flux
                     setInterval(() => fetchSensorData('ph_sensor', 'ph-level-real'), 5000);  // Polling for ph level
                     setInterval(() => fetchSensorData('tds', 'tds-level-real'), 5000);  // Polling tds for TDS level
-                    setInterval(() => fetchSensorData('battery_history', 'battery-level-real'), 5000);
                 });
                 </script><script>
     document.addEventListener("DOMContentLoaded", function() {

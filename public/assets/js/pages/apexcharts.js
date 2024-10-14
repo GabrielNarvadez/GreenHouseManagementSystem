@@ -1590,7 +1590,7 @@ var colors = ["#00acc1", "#1abc9c"],
             dashArray: 4
         },
         colors: colors = dataColors ? dataColors.split(",") : colors,
-        series: [67],
+        series: [90],
         labels: ["Battery Percentage"],
         responsive: [{
             breakpoint: 380,
@@ -1602,3 +1602,196 @@ var colors = ["#00acc1", "#1abc9c"],
         }]
     };
 (chart = new ApexCharts(document.querySelector("#apex-radialbar-3"), options)).render();
+
+// Assuming your apexcharts.js has other functions here...
+
+// Other chart initializations might be above this line
+
+// Battery Percentage Radial Bar Chart
+document.addEventListener("DOMContentLoaded", function () {
+    // Function to fetch battery percentage from the API
+    function fetchBatteryPercentage(chart) {
+        fetch('/api/battery-percentage', {
+            headers: {
+                'Accept': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("API Response for battery percentage:", data);  // Debugging
+
+            if (Array.isArray(data) && data.length > 0) {
+                const latestEntry = data.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))[0];
+                const latestValue = parseFloat(latestEntry.metric_value);
+
+                // Update the chart
+                chart.updateSeries([latestValue]);
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching battery percentage data:", error);
+        });
+    }
+
+    // Function to fetch light sensor data from the API and update the chart
+    function fetchSensorData(chart) {
+        fetch('/api/sensor-data/light_sensor', {
+            headers: {
+                'Accept': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("API Response for light_sensor:", data);  // Debugging
+
+            if (Array.isArray(data) && data.length > 0) {
+                const categories = data.map(entry => new Date(entry.timestamp).toISOString().slice(0, 10)); // Extract date
+                const values = data.map(entry => parseFloat(entry.value)); // Extract sensor values
+
+                // Update the ApexCharts series and xaxis categories
+                chart.updateOptions({
+                    series: [{
+                        name: "Light Sensor Data",
+                        data: values
+                    }],
+                    xaxis: {
+                        categories: categories
+                    }
+                });
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching light_sensor data:", error);
+        });
+    }
+
+    // Battery percentage chart setup
+    var dataColorsBattery = $("#apex-radialbar-3").data("colors"),
+        batteryOptions = {
+            chart: {
+                height: 375,
+                type: "radialBar"
+            },
+            plotOptions: {
+                radialBar: {
+                    startAngle: -135,
+                    endAngle: 135,
+                    dataLabels: {
+                        name: {
+                            fontSize: "16px",
+                            offsetY: 120
+                        },
+                        value: {
+                            offsetY: 76,
+                            fontSize: "22px",
+                            formatter: function (e) {
+                                return e + "%";
+                            }
+                        }
+                    }
+                }
+            },
+            fill: {
+                gradient: {
+                    enabled: true,
+                    shade: "dark",
+                    shadeIntensity: 0.15,
+                    inverseColors: false,
+                    opacityFrom: 1,
+                    opacityTo: 1,
+                    stops: [0, 50, 65, 91]
+                }
+            },
+            stroke: {
+                dashArray: 4
+            },
+            colors: dataColorsBattery ? dataColorsBattery.split(",") : ["#f1556c"],
+            series: [0],  // Placeholder value
+            labels: ["Battery Percentage"],
+            responsive: [{
+                breakpoint: 380,
+                options: {
+                    chart: {
+                        height: 280
+                    }
+                }
+            }]
+        };
+
+    var batteryChart = new ApexCharts(document.querySelector("#apex-radialbar-3"), batteryOptions);
+    batteryChart.render();
+
+    // Light sensor chart setup
+    var dataColorsLight = $("#apex-line-1").data("colors"),
+        lightOptions = {
+            chart: {
+                height: 380,
+                type: "line",
+                zoom: { enabled: false },
+                toolbar: { show: false }
+            },
+            dataLabels: {
+                enabled: true
+            },
+            stroke: {
+                width: [3],
+                curve: "smooth"
+            },
+            series: [{
+                name: "Light Sensor Data",
+                data: []  // Placeholder for light sensor data
+            }],
+            xaxis: {
+                type: "datetime",
+                categories: []  // Placeholder for timestamps
+            },
+            title: {
+                text: "Light Sensor Data",
+                align: "left",
+                style: { fontSize: "14px", color: "#666" }
+            },
+            grid: {
+                row: { colors: ["transparent", "transparent"], opacity: 0.2 },
+                borderColor: "#f1f3fa"
+            },
+            markers: {
+                style: "inverted",
+                size: 6
+            },
+            yaxis: {
+                title: { text: "Sensor Value" }
+            },
+            legend: {
+                position: "top",
+                horizontalAlign: "right",
+                floating: true,
+                offsetY: -25,
+                offsetX: -5
+            },
+            responsive: [{
+                breakpoint: 600,
+                options: {
+                    chart: {
+                        toolbar: { show: false }
+                    },
+                    legend: { show: false }
+                }
+            }]
+        };
+
+    var lightChart = new ApexCharts(document.querySelector("#apex-line-1"), lightOptions);
+    lightChart.render();
+
+    // Fetch battery and light sensor data immediately on page load
+    fetchBatteryPercentage(batteryChart);
+    fetchSensorData(lightChart);
+
+    // Set up polling to refresh both battery and light sensor data every 10 seconds
+    setInterval(() => fetchBatteryPercentage(batteryChart), 10000);  // Poll battery percentage every 10 seconds
+    setInterval(() => fetchSensorData(lightChart), 10000);  // Poll light sensor data every 10 seconds
+});
+
+
+// Other chart initializations might be below this line
+
+
