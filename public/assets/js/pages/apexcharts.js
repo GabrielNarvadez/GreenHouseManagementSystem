@@ -112,8 +112,99 @@ const createAreaChart = (selector) => {
 new ApexCharts(document.querySelector("#apex-area"), createAreaChart("#apex-area")).render();
 // End: South, North, Central Area Chart
 
-// Start: Free Cash Flow Bar Chart
-const createColumnChart = (selector) => {
+// Start: Free Cash Flow Bar Chart// Function to fetch consumption data from API endpoints
+const fetchConsumptionData = async (endpoint) => {
+    const response = await fetch(endpoint);
+    if (!response.ok) {
+        throw new Error(`Error fetching data from ${endpoint}`);
+    }
+    return response.json();
+};
+
+// Function to group data by weeks and calculate weekly averages
+const calculateWeeklyAverages = (data) => {
+    // Group data by week
+    const weeks = data.reduce((acc, entry) => {
+        const week = getWeekFromDate(entry.date); // Assuming 'entry.date' exists in the format YYYY-MM-DD
+        if (!acc[week]) acc[week] = {};
+        if (!acc[week][entry.metric_type]) acc[week][entry.metric_type] = { total: 0, count: 0 };
+        
+        acc[week][entry.metric_type].total += parseFloat(entry.metric_value);
+        acc[week][entry.metric_type].count += 1;
+
+        return acc;
+    }, {});
+
+    // Calculate weekly averages for each metric type
+    const weeklyAverages = Object.keys(weeks).map(week => {
+        const metrics = Object.keys(weeks[week]).map(metric_type => ({
+            metric_type,
+            week,
+            average: (weeks[week][metric_type].total / weeks[week][metric_type].count).toFixed(2)
+        }));
+        return metrics;
+    }).flat();
+
+    return weeklyAverages;
+};
+
+// Helper function to get the week number from a date
+const getWeekFromDate = (dateString) => {
+    const date = new Date(dateString);
+    const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
+    const pastDaysOfYear = (date - firstDayOfYear) / 86400000;
+    return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
+};
+
+// Main function to initialize the chart
+const initChart = async () => {
+    const endpoints = [
+        '/api/harvested-power',
+        '/api/system-power-consumption',
+        '/api/water-pump-consumption',
+        '/api/misting-consumption',
+        '/api/shade-net-consumption'
+    ];
+
+    try {
+        // Fetch data from all endpoints
+        const dataPromises = endpoints.map(fetchConsumptionData);
+        const results = await Promise.all(dataPromises);
+        
+        // Flatten the array of results
+        const allData = results.flat();
+
+        // Calculate weekly averages
+        const weeklyAverages = calculateWeeklyAverages(allData);
+
+        // Prepare data for the chart
+        const weeks = [...new Set(weeklyAverages.map(entry => entry.week))].sort(); // Unique weeks sorted
+        const seriesData = weeklyAverages.reduce((acc, entry) => {
+            let metricSeries = acc.find(series => series.name === entry.metric_type);
+            if (!metricSeries) {
+                metricSeries = { name: entry.metric_type, data: [] };
+                acc.push(metricSeries);
+            }
+            metricSeries.data[weeks.indexOf(entry.week)] = parseFloat(entry.average);
+            return acc;
+        }, []);
+
+        // Fill missing data points with 0
+        seriesData.forEach(series => {
+            series.data = series.data.map(val => val || 0);
+        });
+
+        // Create and render the chart
+        const chartOptions = createColumnChart("#apex-column-1", seriesData, weeks);
+        new ApexCharts(document.querySelector("#apex-column-1"), chartOptions).render();
+
+    } catch (error) {
+        console.error('Error initializing chart:', error.message);
+    }
+};
+
+// Update the createColumnChart function to accept chart data and weeks
+const createColumnChart = (selector, seriesData, categories) => {
     const dataColors = $(selector).data("colors");
     const colors = dataColors ? dataColors.split(",") : ["#00acc1", "#f672a7", "#1abc9c"];
 
@@ -123,19 +214,18 @@ const createColumnChart = (selector) => {
         dataLabels: { enabled: false },
         stroke: { show: true, width: 2, colors: ["transparent"] },
         colors,
-        series: [
-            { name: "Net Profit", data: [44, 55, 57, 56, 61, 58, 63, 60, 66] },
-            { name: "Revenue", data: [76, 85, 101, 98, 87, 105, 91, 114, 94] },
-            { name: "Free Cash Flow", data: [35, 41, 36, 26, 45, 48, 52, 53, 41] }
-        ],
-        xaxis: { categories: ["Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct"] },
+        series: seriesData,
+        xaxis: { categories }, // Dynamic categories (weeks)
         yaxis: { title: { text: "$ (thousands)" } },
         fill: { opacity: 1 },
         grid: { row: { colors: ["transparent"], opacity: 0.2 }, borderColor: "#f1f3fa", padding: { bottom: 10 } },
         tooltip: { y: { formatter: (val) => `$ ${val} thousands` } },
     };
 };
-new ApexCharts(document.querySelector("#apex-column-1"), createColumnChart("#apex-column-1")).render();
+
+// Initialize the chart on page load
+initChart();
+
 // End: Free Cash Flow Bar Chart
 
 // Start: Team A, B, C Mixed Chart
@@ -258,7 +348,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }]
         };
 
-    var batteryChart = new ApexCharts(document.querySelector("#apex-radialbar-3"), batteryOptions);
+    const batteryChart = new ApexCharts(document.querySelector("#apex-radialbar-3"), batteryOptions);
     batteryChart.render();
 
     fetchBatteryPercentage(batteryChart);
