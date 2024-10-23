@@ -85,34 +85,166 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 // End: Flux Sensor Chart
 
-const generateDayWiseTimeSeries = (baseval, count, yrange) => {
-    return Array.from({ length: count }, (_, i) => [baseval + (i * 86400000), Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min]);
+// Start: TDS Sensor Chart
+const fetchTDSSensorData = async (chart) => {
+    try {
+        const response = await fetch('/api/sensor-data/tds');
+        const data = await response.json();
+
+        const tdsSensorData = data
+            .filter(item => item.sensor === "tds")
+            .map(item => ({
+                value: item.value,  
+                timestamp: new Date(item.timestamp).toISOString()
+            }));
+
+        const dailyAverages = groupDataByDayAndAverage(tdsSensorData);
+        const tdsValues = dailyAverages.map(item => item.averageValue);
+        const tdsDates = dailyAverages.map(item => item.date);
+
+        chart.updateOptions({
+            series: [{ name: "TDS Sensor (Average per Day)", data: tdsValues }],
+            xaxis: { categories: tdsDates }
+        });
+    } catch (error) {
+        console.error("Error fetching TDS Sensor data:", error);
+    }
 };
 
-// Start: South, North, Central Area Chart
-const createAreaChart = (selector) => {
+const createTDSSensorChart = (selector) => {
     const dataColors = $(selector).data("colors");
-    const colors = dataColors ? dataColors.split(",") : ["#00acc1", "#f7b84b", "#CED4DC"];
+    const colors = dataColors ? dataColors.split(",") : ["#00acc1"];
 
     return {
-        chart: { height: 380, type: "area", stacked: true },
-        colors,
-        dataLabels: { enabled: false },
-        stroke: { width: [2], curve: "smooth" },
-        series: [
-            { name: "South", data: generateDayWiseTimeSeries(new Date("11 Feb 2017 GMT").getTime(), 20, { min: 10, max: 60 }) },
-            { name: "North", data: generateDayWiseTimeSeries(new Date("11 Feb 2017 GMT").getTime(), 20, { min: 10, max: 20 }) },
-
-        ],
-        fill: { type: "gradient", gradient: { opacityFrom: 0.6, opacityTo: 0.8 } },
-        legend: { position: "top", horizontalAlign: "left" },
-        xaxis: { type: "datetime" },
+        chart: {
+            height: 380, type: "line",
+            shadow: { enabled: false, color: "#bbb", top: 3, left: 2, blur: 3, opacity: 1 }
+        },
+        stroke: { width: 5, curve: "smooth" },
+        series: [{ name: "TDS Sensor (Average per Day)", data: [] }],
+        xaxis: { type: "datetime", categories: [] },
+        title: { text: "TDS Sensor (Average per Day)", align: "left", style: { fontSize: "14px", color: "#666" } },
+        fill: {
+            type: "gradient", gradient: {
+                shade: "dark", gradientToColors: colors, shadeIntensity: 1,
+                opacityFrom: 1, opacityTo: 1, stops: [0, 100]
+            }
+        },
+        markers: {
+            size: 4, opacity: 0.9, colors: ["#56c2d6"], strokeColor: "#fff",
+            strokeWidth: 2, style: "inverted", hover: { size: 7 }
+        },
+        yaxis: { 
+            title: { text: "Total Dissolved Solids (ppm)" },
+            labels: {
+                formatter: function (value) {
+                    return Math.round(value);
+                }
+            }
+        },
+        grid: { borderColor: "#185a9d" },
+        tooltip: {
+            y: {
+                formatter: function(value) {
+                    return Math.round(value) + " ppm";
+                }
+            }
+        }
     };
 };
-new ApexCharts(document.querySelector("#apex-area"), createAreaChart("#apex-area")).render();
-// End: South, North, Central Area Chart
 
-// Start: Free Cash Flow Bar Chart// Function to fetch consumption data from API endpoints
+document.addEventListener("DOMContentLoaded", function () {
+    const tdsSensorChart = new ApexCharts(document.querySelector("#apex-line-45"), createTDSSensorChart("#apex-line-45"));
+    tdsSensorChart.render();
+
+    fetchTDSSensorData(tdsSensorChart);
+
+    setInterval(() => fetchTDSSensorData(tdsSensorChart), 10000);
+});
+// End: TDS Sensor Chart
+
+
+// Start: pH Level Chart (apex-line-100)
+const fetchPHSensorData = async (chart) => {
+    try {
+        const response = await fetch('/api/sensor-data/ph_sensor');
+        const data = await response.json();
+
+        const phSensorData = data
+            .filter(item => item.sensor === "ph_sensor")
+            .map(item => ({
+                value: item.value,  
+                timestamp: new Date(item.timestamp).toISOString()
+            }));
+
+        const dailyAverages = groupDataByDayAndAverage(phSensorData);
+        const phValues = dailyAverages.map(item => item.averageValue);
+        const phDates = dailyAverages.map(item => item.date);
+
+        chart.updateOptions({
+            series: [{ name: "pH Level (Average per Day)", data: phValues }],
+            xaxis: { categories: phDates }
+        });
+    } catch (error) {
+        console.error("Error fetching pH Sensor data:", error);
+    }
+};
+
+const createPHSensorChart = (selector) => {
+    const dataColors = $(selector).data("colors");
+    const colors = dataColors ? dataColors.split(",") : ["#00acc1"];
+
+    return {
+        chart: {
+            height: 380, type: "line",
+            shadow: { enabled: false, color: "#bbb", top: 3, left: 2, blur: 3, opacity: 1 }
+        },
+        stroke: { width: 5, curve: "smooth" },
+        series: [{ name: "pH Level (Average per Day)", data: [] }],
+        xaxis: { type: "datetime", categories: [] },
+        title: { text: "pH Level (Average per Day)", align: "left", style: { fontSize: "14px", color: "#666" } },
+        fill: {
+            type: "gradient", gradient: {
+                shade: "dark", gradientToColors: colors, shadeIntensity: 1,
+                opacityFrom: 1, opacityTo: 1, stops: [0, 100]
+            }
+        },
+        markers: {
+            size: 4, opacity: 0.9, colors: ["#56c2d6"], strokeColor: "#fff",
+            strokeWidth: 2, style: "inverted", hover: { size: 7 }
+        },
+        yaxis: { 
+            title: { text: "pH Level" },
+            labels: {
+                formatter: function (value) {
+                    return Math.round(value);  
+                }
+            }
+        },
+        grid: { borderColor: "#185a9d" },
+        tooltip: {
+            y: {
+                formatter: function(value) {
+                    return Math.round(value) + " pH";
+                }
+            }
+        }
+    };
+};
+
+document.addEventListener("DOMContentLoaded", function () {
+    const phSensorChart = new ApexCharts(document.querySelector("#apex-line-100"), createPHSensorChart("#apex-line-100"));
+    phSensorChart.render();
+
+    fetchPHSensorData(phSensorChart);
+
+    setInterval(() => fetchPHSensorData(phSensorChart), 10000);
+});
+// End: pH Level Chart
+
+
+// Start: Free Cash Flow Bar Chart
+
 const fetchConsumptionData = async (endpoint) => {
     const response = await fetch(endpoint);
     if (!response.ok) {
@@ -121,11 +253,13 @@ const fetchConsumptionData = async (endpoint) => {
     return response.json();
 };
 
-// Function to group data by weeks and calculate weekly averages
 const calculateWeeklyAverages = (data) => {
-    // Group data by week
-    const weeks = data.reduce((acc, entry) => {
-        const week = getWeekFromDate(entry.date); // Assuming 'entry.date' exists in the format YYYY-MM-DD
+    const filteredData = data.filter(entry => 
+        ['water_pump_consumption', 'misting_consumption', 'shade_net_consumption'].includes(entry.metric_type)
+    );
+
+    const weeks = filteredData.reduce((acc, entry) => {
+        const week = getWeekFromDate(entry.timestamp);
         if (!acc[week]) acc[week] = {};
         if (!acc[week][entry.metric_type]) acc[week][entry.metric_type] = { total: 0, count: 0 };
         
@@ -135,7 +269,6 @@ const calculateWeeklyAverages = (data) => {
         return acc;
     }, {});
 
-    // Calculate weekly averages for each metric type
     const weeklyAverages = Object.keys(weeks).map(week => {
         const metrics = Object.keys(weeks[week]).map(metric_type => ({
             metric_type,
@@ -148,7 +281,6 @@ const calculateWeeklyAverages = (data) => {
     return weeklyAverages;
 };
 
-// Helper function to get the week number from a date
 const getWeekFromDate = (dateString) => {
     const date = new Date(dateString);
     const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
@@ -156,29 +288,25 @@ const getWeekFromDate = (dateString) => {
     return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
 };
 
-// Main function to initialize the chart
 const initChart = async () => {
     const endpoints = [
-        '/api/harvested-power',
-        '/api/system-power-consumption',
         '/api/water-pump-consumption',
         '/api/misting-consumption',
         '/api/shade-net-consumption'
     ];
 
     try {
-        // Fetch data from all endpoints
         const dataPromises = endpoints.map(fetchConsumptionData);
         const results = await Promise.all(dataPromises);
         
-        // Flatten the array of results
         const allData = results.flat();
 
-        // Calculate weekly averages
         const weeklyAverages = calculateWeeklyAverages(allData);
 
-        // Prepare data for the chart
-        const weeks = [...new Set(weeklyAverages.map(entry => entry.week))].sort(); // Unique weeks sorted
+        let weeks = [...new Set(weeklyAverages.map(entry => entry.week))].sort((a, b) => b - a);
+
+        const weekLabels = weeks.map((week, index) => `Week ${index + 1}`).reverse();
+
         const seriesData = weeklyAverages.reduce((acc, entry) => {
             let metricSeries = acc.find(series => series.name === entry.metric_type);
             if (!metricSeries) {
@@ -189,13 +317,11 @@ const initChart = async () => {
             return acc;
         }, []);
 
-        // Fill missing data points with 0
         seriesData.forEach(series => {
-            series.data = series.data.map(val => val || 0);
+            series.data = series.data.reverse();
         });
 
-        // Create and render the chart
-        const chartOptions = createColumnChart("#apex-column-1", seriesData, weeks);
+        const chartOptions = createColumnChart("#apex-column-1", seriesData, weekLabels);
         new ApexCharts(document.querySelector("#apex-column-1"), chartOptions).render();
 
     } catch (error) {
@@ -203,7 +329,6 @@ const initChart = async () => {
     }
 };
 
-// Update the createColumnChart function to accept chart data and weeks
 const createColumnChart = (selector, seriesData, categories) => {
     const dataColors = $(selector).data("colors");
     const colors = dataColors ? dataColors.split(",") : ["#00acc1", "#f672a7", "#1abc9c"];
@@ -215,108 +340,129 @@ const createColumnChart = (selector, seriesData, categories) => {
         stroke: { show: true, width: 2, colors: ["transparent"] },
         colors,
         series: seriesData,
-        xaxis: { categories }, // Dynamic categories (weeks)
-        yaxis: { title: { text: "$ (thousands)" } },
+        xaxis: { categories },
+        yaxis: { title: { text: "Consumption (units)" } },
         fill: { opacity: 1 },
         grid: { row: { colors: ["transparent"], opacity: 0.2 }, borderColor: "#f1f3fa", padding: { bottom: 10 } },
-        tooltip: { y: { formatter: (val) => `$ ${val} thousands` } },
+        tooltip: { y: { formatter: (val) => `${val} units` } },
     };
 };
 
-// Initialize the chart on page load
 initChart();
-
 // End: Free Cash Flow Bar Chart
 
-// Start: Team A, B, C Mixed Chart
-const createMixedChart = (selector) => {
+
+// Start: Battery History Chart (apex-line-99)
+const fetchBatteryHistoryData = async (chart) => {
+    try {
+        const response = await fetch('/api/battery-percentage'); // Changed endpoint
+        const data = await response.json();
+
+        const batteryHistoryData = data
+            .filter(item => item.metric_type === "battery_percentage")  // Changed key to match the new sample
+            .map(item => ({
+                value: parseFloat(item.metric_value), // Ensure metric_value is parsed to float
+                timestamp: new Date(item.timestamp).toISOString()
+            }));
+
+        const dailyAverages = groupDataByDayAndAverage(batteryHistoryData);
+        const batteryValues = dailyAverages.map(item => item.averageValue);
+        const batteryDates = dailyAverages.map(item => item.date);
+
+        chart.updateOptions({
+            series: [{ name: "Battery History (Average per Day)", data: batteryValues }],
+            xaxis: { categories: batteryDates }
+        });
+    } catch (error) {
+        console.error("Error fetching Battery History data:", error);
+    }
+};
+
+const createBatteryHistoryChart = (selector) => {
     const dataColors = $(selector).data("colors");
-    const colors = dataColors ? dataColors.split(",") : ["#00acc1", "#f672a7", "#1abc9c"];
+    const colors = dataColors ? dataColors.split(",") : ["#00acc1"];
 
     return {
-        chart: { height: 380, type: "line", stacked: false, toolbar: { show: false } },
-        stroke: { width: [0, 2, 4], curve: "smooth" },
-        plotOptions: { bar: { columnWidth: "50%" } },
-        colors,
-        series: [
-            { name: "Team A", type: "column", data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30] },
-            { name: "Team B", type: "area", data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43] },
-            { name: "Team C", type: "line", data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39] }
-        ],
+        chart: {
+            height: 380, type: "line",
+            shadow: { enabled: false, color: "#bbb", top: 3, left: 2, blur: 3, opacity: 1 }
+        },
+        stroke: { width: 5, curve: "smooth" },
+        series: [{ name: "Battery History (Average per Day)", data: [] }],
+        xaxis: { type: "datetime", categories: [] },
+        title: { text: "Battery History (Average per Day)", align: "left", style: { fontSize: "14px", color: "#666" } },
         fill: {
-            opacity: [.85, .25, 1], gradient: {
-                inverseColors: false, shade: "light", type: "vertical",
-                opacityFrom: 0.85, opacityTo: 0.55, stops: [0, 100, 100, 100]
+            type: "gradient", gradient: {
+                shade: "dark", gradientToColors: colors, shadeIntensity: 1,
+                opacityFrom: 1, opacityTo: 1, stops: [0, 100]
             }
         },
-        labels: ["01/01/2003", "02/01/2003", "03/01/2003", "04/01/2003", "05/01/2003", "06/01/2003", "07/01/2003", "08/01/2003", "09/01/2003", "10/01/2003", "11/01/2003"],
-        markers: { size: 0 },
-        legend: { offsetY: 7 },
-        xaxis: { type: "datetime" },
-        yaxis: {
-            title: { text: "Points" }, min: 0,
-            tickAmount: 5, max: 100
+        markers: {
+            size: 4, opacity: 0.9, colors: ["#56c2d6"], strokeColor: "#fff",
+            strokeWidth: 2, style: "inverted", hover: { size: 7 }
         },
+        yaxis: { 
+            title: { text: "Battery Percentage (%)" },
+            labels: {
+                formatter: function (value) {
+                    return Math.round(value);  
+                }
+            }
+        },
+        grid: { borderColor: "#185a9d" },
         tooltip: {
-            shared: true,
-            intersect: false,
             y: {
-                formatter: (y) => typeof y !== "undefined" ? `${y.toFixed(0)} points` : y
+                formatter: function(value) {
+                    return Math.round(value) + " %";
+                }
             }
-        },
-        grid: { borderColor: "#f1f3fa" }
+        }
     };
 };
-new ApexCharts(document.querySelector("#apex-mixed-2"), createMixedChart("#apex-mixed-2")).render();
-// End: Team A, B, C Mixed Chart
 
+document.addEventListener("DOMContentLoaded", function () {
+    const batteryHistoryChart = new ApexCharts(document.querySelector("#apex-line-99"), createBatteryHistoryChart("#apex-line-99"));
+    batteryHistoryChart.render();
 
-// Battery Percentage Radial Bar Chart
+    fetchBatteryHistoryData(batteryHistoryChart);
+
+    setInterval(() => fetchBatteryHistoryData(batteryHistoryChart), 10000);
+});
+// End: Battery History Chart
+
+// Start: Battery Percentage Radial Bar Chart
+
 document.addEventListener("DOMContentLoaded", function() {
     function fetchBatteryPercentage(chart) {
         fetch('/api/battery-percentage', {
-                headers: {
-                    'Accept': 'application/json',
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log("API Response for battery percentage:", data);
-
-                if (Array.isArray(data) && data.length > 0) {
-                    const latestEntry = data.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))[0];
-                    const latestValue = parseFloat(latestEntry.metric_value);
-
-               
-                    chart.updateSeries([latestValue]);
-                }
-            })
-            .catch(error => {
-                console.error("Error fetching battery percentage data:", error);
-            });
+            headers: { 'Accept': 'application/json' }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (Array.isArray(data) && data.length > 0) {
+                const latestEntry = data
+                    .filter(item => item.metric_type === "battery_percentage")  // Changed key to match the new sample
+                    .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))[0];
+                const latestValue = parseFloat(latestEntry.metric_value);  // Ensure metric_value is parsed to float
+                chart.updateSeries([latestValue]);
+            }
+        })
+        .catch(error => console.error("Error fetching battery percentage data:", error));
     }
 
-    var dataColorsBattery = $("#apex-radialbar-3").data("colors"),
+    const dataColorsBattery = $("#apex-radialbar-3").data("colors"),
         batteryOptions = {
-            chart: {
-                height: 375,
-                type: "radialBar"
-            },
+            chart: { height: 375, type: "radialBar" },
             plotOptions: {
                 radialBar: {
                     startAngle: -135,
                     endAngle: 135,
                     dataLabels: {
-                        name: {
-                            fontSize: "16px",
-                            offsetY: 120
-                        },
+                        name: { fontSize: "16px", offsetY: 120 },
                         value: {
                             offsetY: 76,
                             fontSize: "22px",
-                            formatter: function(e) {
-                                return e + "%";
-                            }
+                            formatter: function(e) { return e + "%"; }
                         }
                     }
                 }
@@ -332,28 +478,93 @@ document.addEventListener("DOMContentLoaded", function() {
                     stops: [0, 50, 65, 91]
                 }
             },
-            stroke: {
-                dashArray: 4
-            },
+            stroke: { dashArray: 4 },
             colors: dataColorsBattery ? dataColorsBattery.split(",") : ["#f1556c"],
             series: [0],
             labels: ["Battery Percentage"],
-            responsive: [{
-                breakpoint: 380,
-                options: {
-                    chart: {
-                        height: 280
-                    }
-                }
-            }]
+            responsive: [{ breakpoint: 380, options: { chart: { height: 280 } } }]
         };
 
     const batteryChart = new ApexCharts(document.querySelector("#apex-radialbar-3"), batteryOptions);
     batteryChart.render();
 
     fetchBatteryPercentage(batteryChart);
-
-    setInterval(() => fetchBatteryPercentage(batteryChart), 10000); 
+    setInterval(() => fetchBatteryPercentage(batteryChart), 10000);
 });
+// End: Battery Percentage Radial Bar Chart
 
-// BATTERY CHART END
+
+
+// Start: Mixed Chart for Harvested Power and System Power Consumption
+
+const fetchData = async (endpoint) => {
+    const response = await fetch(endpoint);
+    if (!response.ok) {
+        throw new Error(`Error fetching data from ${endpoint}`);
+    }
+    return response.json();
+};
+
+const mapApiData = (data) => {
+    return data.map(entry => ({
+        x: new Date(entry.timestamp).getTime(),
+        y: parseFloat(entry.metric_value)
+    }));
+};
+
+const initMixedChart = async () => {
+    try {
+        const harvestedPowerData = await fetchData('/api/harvested-power');
+        const systemPowerConsumptionData = await fetchData('/api/system-power-consumption');
+
+        const harvestedPowerSeries = mapApiData(harvestedPowerData);
+        const systemPowerConsumptionSeries = mapApiData(systemPowerConsumptionData);
+
+        const seriesData = [
+            { name: "Harvested Power", type: "area", data: harvestedPowerSeries },
+            { name: "System Power Consumption", type: "line", data: systemPowerConsumptionSeries }
+        ];
+
+        new ApexCharts(document.querySelector("#apex-mixed-2"), createMixedChart("#apex-mixed-2", seriesData)).render();
+    } catch (error) {
+        console.error("Error initializing mixed chart:", error.message);
+    }
+};
+
+const createMixedChart = (selector, seriesData) => {
+    const dataColors = $(selector).data("colors");
+    const colors = dataColors ? dataColors.split(",") : ["#00acc1", "#f672a7"];
+
+    return {
+        chart: { height: 380, type: "line", stacked: false, toolbar: { show: false } },
+        stroke: { width: [2, 4], curve: "smooth" },
+        plotOptions: { bar: { columnWidth: "50%" } },
+        colors,
+        series: seriesData,
+        fill: {
+            opacity: [.25, 1], gradient: {
+                inverseColors: false, shade: "light", type: "vertical",
+                opacityFrom: 0.85, opacityTo: 0.55, stops: [0, 100, 100, 100]
+            }
+        },
+        labels: seriesData[0]?.data.map(entry => new Date(entry.x).toISOString().slice(0, 10)) || [],
+        markers: { size: 0 },
+        legend: { offsetY: 7 },
+        xaxis: { type: "datetime" },
+        yaxis: {
+            title: { text: "Watts" },
+            min: 0,
+            tickAmount: 5,
+            max: Math.max(...seriesData.flatMap(s => s.data.map(point => point.y))) + 50
+        },
+        tooltip: {
+            shared: true,
+            intersect: false,
+            y: { formatter: (y) => typeof y !== "undefined" ? `${y.toFixed(2)} Watts` : y }
+        },
+        grid: { borderColor: "#f1f3fa" }
+    };
+};
+
+initMixedChart();
+// End: Mixed Chart for Harvested Power and System Power Consumption
