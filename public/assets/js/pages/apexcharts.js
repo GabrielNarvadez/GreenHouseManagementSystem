@@ -568,3 +568,137 @@ const createMixedChart = (selector, seriesData) => {
 
 initMixedChart();
 // End: Mixed Chart for Harvested Power and System Power Consumption
+// Start: Temperature Sensor Chart
+Apex.grid = { padding: { right: 0, left: 0 } };
+Apex.dataLabels = { enabled: false };
+
+const fetchTemperatureSensorData = async (chart) => {
+    try {
+        const response = await fetch('/api/sensor-data/temp');
+        const data = await response.json();
+
+        const temperatureSensorData = data
+            .filter(item => item.sensor === "temp")
+            .map(item => ({
+                value: Math.round(item.value), // Round the temperature values
+                timestamp: new Date(item.timestamp).toISOString()
+            }));
+
+        const dailyAverages = groupDataByDayAndAverage(temperatureSensorData);
+
+        const tempValues = dailyAverages.map(item => Math.round(item.averageValue)); // Round the average values
+        const tempDates = dailyAverages.map(item => item.date);
+
+        chart.updateOptions({
+            series: [{ name: "Temperature Sensor (Average per Day)", data: tempValues }],
+            xaxis: { categories: tempDates }
+        });
+    } catch (error) {
+        console.error("Error fetching Temperature Sensor data:", error);
+    }
+};
+
+const createTemperatureSensorChart = (selector) => {
+    const dataColors = $(selector).data("colors");
+    const colors = dataColors ? dataColors.split(",") : ["#FF5733"];
+
+    return {
+        chart: {
+            height: 380, type: "line",
+            shadow: { enabled: false, color: "#bbb", top: 3, left: 2, blur: 3, opacity: 1 }
+        },
+        stroke: { width: 5, curve: "smooth" },
+        series: [{ name: "Temperature Sensor (Average per Day)", data: [] }],
+        xaxis: { type: "datetime", categories: [] },
+        title: { text: "Temperature Sensor (Average per Day)", align: "left", style: { fontSize: "14px", color: "#666" } },
+        fill: {
+            type: "gradient", gradient: {
+                shade: "dark", gradientToColors: colors, shadeIntensity: 1,
+                opacityFrom: 1, opacityTo: 1, stops: [0, 100]
+            }
+        },
+        markers: {
+            size: 4, opacity: 0.9, colors: ["#FF5733"], strokeColor: "#fff",
+            strokeWidth: 2, style: "inverted", hover: { size: 7 }
+        },
+        yaxis: { title: { text: "Degrees Celsius (°C)" } },
+        grid: { borderColor: "#185a9d" },
+    };
+};
+
+document.addEventListener("DOMContentLoaded", function () {
+    const tempSensorChart = new ApexCharts(document.querySelector("#apex-line-26"), createTemperatureSensorChart("#apex-line-26"));
+    tempSensorChart.render();
+
+    fetchTemperatureSensorData(tempSensorChart);
+
+    setInterval(() => fetchTemperatureSensorData(tempSensorChart), 10000);
+});
+// End: Temperature Sensor Chart
+// Start: Humidity Sensor Chart
+Apex.grid = { padding: { right: 0, left: 0 } };
+Apex.dataLabels = { enabled: false };
+
+const fetchHumiditySensorData = async (chart) => {
+    try {
+        const response = await fetch('/api/sensor-data/humidity');
+        const data = await response.json();
+
+        const humiditySensorData = data
+            .filter(item => item.sensor === "humidity")
+            .map(item => ({
+                value: Math.round(item.value), // Round the humidity values
+                timestamp: new Date(item.timestamp).toISOString()
+            }));
+
+        const dailyAverages = groupDataByDayAndAverage(humiditySensorData);
+
+        const humidityValues = dailyAverages.map(item => Math.round(item.averageValue)); // Round the average values
+        const humidityDates = dailyAverages.map(item => item.date);
+
+        chart.updateOptions({
+            series: [{ name: "Humidity Sensor (Average per Day)", data: humidityValues }],
+            xaxis: { categories: humidityDates }
+        });
+    } catch (error) {
+        console.error("Error fetching Humidity Sensor data:", error);
+    }
+};
+
+const createHumiditySensorChart = (selector) => {
+    const dataColors = $(selector).data("colors");
+    const colors = dataColors ? dataColors.split(",") : ["#3498db"];
+
+    return {
+        chart: {
+            height: 380, type: "line",
+            shadow: { enabled: false, color: "#bbb", top: 3, left: 2, blur: 3, opacity: 1 }
+        },
+        stroke: { width: 5, curve: "smooth" },
+        series: [{ name: "Humidity Sensor (Average per Day)", data: [] }],
+        xaxis: { type: "datetime", categories: [] },
+        title: { text: "Humidity Sensor (Average per Day)", align: "left", style: { fontSize: "14px", color: "#666" } },
+        fill: {
+            type: "gradient", gradient: {
+                shade: "dark", gradientToColors: colors, shadeIntensity: 1,
+                opacityFrom: 1, opacityTo: 1, stops: [0, 100]
+            }
+        },
+        markers: {
+            size: 4, opacity: 0.9, colors: ["#3498db"], strokeColor: "#fff",
+            strokeWidth: 2, style: "inverted", hover: { size: 7 }
+        },
+        yaxis: { title: { text: "Grams per cubic meter (g/m³)" } },
+        grid: { borderColor: "#185a9d" },
+    };
+};
+
+document.addEventListener("DOMContentLoaded", function () {
+    const humiditySensorChart = new ApexCharts(document.querySelector("#apex-line-27"), createHumiditySensorChart("#apex-line-27"));
+    humiditySensorChart.render();
+
+    fetchHumiditySensorData(humiditySensorChart);
+
+    setInterval(() => fetchHumiditySensorData(humiditySensorChart), 10000);
+});
+// End: Humidity Sensor Chart
