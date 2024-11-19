@@ -1,20 +1,16 @@
 // src/models/db.js
 
 const mysql = require('mysql2');
-require('dotenv').config();
 
-console.log('DB_HOST:', process.env.DB_HOST);
-console.log('DB_USER:', process.env.DB_USER);
-console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
-console.log('DB_NAME:', process.env.DB_NAME);
-
+// Hard-code the database credentials here
 const db = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME
+  host: 'localhost', // DB host
+  user: 'gabtheinhinyero', // DB user
+  password: 'gabtheinhingero', // DB password
+  database: 'greenhouse_dashboard' // DB name
 });
 
+// Connect to the database
 db.connect((err) => {
   if (err) {
     console.error('MySQL connection error:', err);
