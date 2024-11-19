@@ -6,7 +6,7 @@ const mysql = require('mysql2');
 const db = mysql.createConnection({
   host: 'localhost', // DB host
   user: 'gabtheinhinyero', // DB user
-  password: 'gabtheinhingero', // DB password
+  password: 'gabtheinhinyero', // DB password
   database: 'greenhouse_dashboard' // DB name
 });
 
