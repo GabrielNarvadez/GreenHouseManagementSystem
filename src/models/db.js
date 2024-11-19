@@ -4,7 +4,7 @@ const mysql = require('mysql2');
 
 // Hard-code the database credentials here
 const db = mysql.createConnection({
-  host: 'localhost', // DB host
+  host: '127.0.0.1', // DB host
   user: 'gabtheinhinyero', // DB user
   password: 'gabtheinhinyero', // DB password
   port: '3306',
