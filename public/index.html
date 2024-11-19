@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Dashboard | Dashtrap - Responsive Bootstrap 5 Admin Dashboard</title>
+    <title>GreenHouseManagement</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
     <meta content="Myra Studio" name="author" />
@@ -72,36 +72,9 @@
                     <li class="menu-item">
                         <a href="#menuLayouts" data-bs-toggle="collapse" class="menu-link waves-effect waves-light">
                             <span class="menu-icon"><i class="bx bx-layout"></i></span>
-                            <span class="menu-text"> Documentation</span>
+                            <span class="menu-text" onclick="downloadDocumentation()"> Documentation</span>
                             <span class="badge bg-blue ms-auto">New</span>
                         </a>
-                        <div class="collapse" id="menuLayouts">
-                            <ul class="sub-menu">
-                                <li class="menu-item">
-                                    <a href="layout-horizontal.html" class="menu-link">
-                                        <span class="menu-text">Horizontal</span>
-                                    </a>
-                                </li>
-
-                                <li class="menu-item">
-                                    <a href="layout-sidenav-light.html" class="menu-link">
-                                        <span class="menu-text">Sidenav Light</span>
-                                    </a>
-                                </li>
-
-                                <li class="menu-item">
-                                    <a href="layout-sidenav-dark.html" class="menu-link">
-                                        <span class="menu-text">Sidenav Dark</span>
-                                    </a>
-                                </li>
-
-                                <li class="menu-item">
-                                    <a href="layout-topbar-dark.html" class="menu-link">
-                                        <span class="menu-text">Topbar Dark</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
                     </li>
 
                 </ul>
@@ -945,6 +918,13 @@
                 });
             </script>
             <script>
+                    function downloadDocumentation() {
+                    window.location.href = 'Documentation.pdf';
+    }
+            </script>
+            <script>
+
+
                 document.addEventListener("DOMContentLoaded", function() {
                     // Function to fetch the latest sensor data by sensor name and update the corresponding element
                     function fetchSensorData(sensor, elementId) {

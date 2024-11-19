@@ -35,5 +35,16 @@ router.get('/shade-net-consumption', powerController.getShadeNetConsumption);
 // Route to save new metric data (POST)
 router.post('/save-metric', powerController.saveMetricData);
 
+// Route to serve the documentation.pdf file
+app.get('/download/documentation', (req, res) => {
+    const filePath = path.join(__dirname, '../assets', 'documentation.pdf');
+    res.download(filePath, 'documentation.pdf', (err) => {
+      if (err) {
+        console.error('Error downloading file:', err);
+        res.status(500).send('Error downloading file');
+      }
+    });
+  });
+
 
 module.exports = router;
