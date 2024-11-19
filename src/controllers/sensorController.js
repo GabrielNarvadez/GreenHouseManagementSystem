@@ -8,7 +8,7 @@ const availableParameters = ['celsius', 'lm', 'pH', 'ppm', 'g/m3', '%'];
 
 // Function to handle POST requests for sensor data
 exports.postSensorData = (req, res) => {
-  const { sensor, output, parameter, value } = req.body;
+  const { sensor, output, parameter, value, timestamp } = req.body;
 
   // Validate if the sensor is in the list of available sensors
   if (!availableSensors.includes(sensor)) {
@@ -20,8 +20,14 @@ exports.postSensorData = (req, res) => {
     return res.status(400).send(`Invalid parameter. Available parameters are: ${availableParameters.join(', ')}`);
   }
 
-  const sql = 'INSERT INTO sensor_data (sensor, output, parameter, value) VALUES (?, ?, ?, ?)';
-  const values = [sensor, output, parameter, value];
+    // Validate the timestamp (ensure it's a valid date)
+    const providedTimestamp = new Date(timestamp);
+    if (isNaN(providedTimestamp.getTime())) {
+      return res.status(400).send('Invalid timestamp. Please provide a valid date.');
+    }  
+
+  const sql = 'INSERT INTO sensor_data (sensor, output, parameter, value, timestamp) VALUES (?, ?, ?, ?, ?)';
+  const values = [sensor, output, parameter, value, providedTimestamp];
 
   db.query(sql, values, (err, result) => {
     if (err) {

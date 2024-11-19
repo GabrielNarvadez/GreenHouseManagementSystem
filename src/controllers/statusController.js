@@ -8,7 +8,7 @@ const availableStatuses = ['OFF', 'In Progress', 'ON'];
 
 // Function to handle POST requests for component data
 exports.postComponentStatus = (req, res) => {
-  const { component, status } = req.body;
+  const { component, status, timestamp } = req.body;
 
   // Validate if the component is in the list of available components
   if (!availableComponents.includes(component)) {
@@ -20,8 +20,14 @@ exports.postComponentStatus = (req, res) => {
     return res.status(400).send(`Invalid status. Available statuses are: ${availableStatuses.join(', ')}`);
   }
 
-  const sql = 'INSERT INTO system_status (component, status) VALUES (?, ?)';
-  const values = [component, status];
+    // Validate the timestamp
+    const providedTimestamp = new Date(timestamp);
+    if (isNaN(providedTimestamp.getTime())) {
+      return res.status(400).send('Invalid timestamp. Please provide a valid date.');
+    }
+
+  const sql = 'INSERT INTO system_status (component, status, timestamp) VALUES (?, ?, ?)';
+  const values = [component, status, providedTimestamp];
 
   db.query(sql, values, (err, result) => {
     if (err) {

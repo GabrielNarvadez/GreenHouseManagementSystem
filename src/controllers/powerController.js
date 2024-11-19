@@ -120,15 +120,21 @@ exports.getShadeNetConsumption = (req, res) => {
 
 // Function to insert new metric data into system_metrics table (POST)
 exports.saveMetricData = (req, res) => {
-  const { metric_type, metric_value } = req.body;
+  const { metric_type, metric_value, timestamp } = req.body;
 
   // Validate the metric_type against predefined allowed values
   if (!allowedMetricTypes.includes(metric_type)) {
     return res.status(400).send(`Invalid metric_type. Allowed values are: ${allowedMetricTypes.join(', ')}`);
   }
 
-  const sql = 'INSERT INTO system_metrics (metric_type, metric_value) VALUES (?, ?)';
-  const values = [metric_type, metric_value];
+    // Validate the timestamp (ensure it's a valid date)
+    const providedTimestamp = new Date(timestamp);
+    if (isNaN(providedTimestamp.getTime())) {
+      return res.status(400).send('Invalid timestamp. Please provide a valid date.');
+    }
+
+  const sql = 'INSERT INTO system_metrics (metric_type, metric_value, timestamp) VALUES (?, ?)';
+  const values = [metric_type, metric_value, providedTimestamp];
 
   db.query(sql, values, (err, result) => {
     if (err) {
