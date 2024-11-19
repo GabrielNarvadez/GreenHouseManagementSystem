@@ -7,6 +7,7 @@ const db = mysql.createConnection({
   host: 'localhost', // DB host
   user: 'gabtheinhinyero', // DB user
   password: 'gabtheinhinyero', // DB password
+  port: '3306',
   database: 'greenhouse_dashboard' // DB name
 });
 
