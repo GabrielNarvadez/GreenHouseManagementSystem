@@ -1,6 +1,6 @@
 const express = require('express');
 const app = require('../app');
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001; // Port is set to 3001 or environment variable
 const fs = require('fs');
 const path = require('path');
 const db = require('../models/db'); // Use your existing db connection
@@ -71,7 +71,6 @@ app.get('/export/consumption', (req, res) => {
 });
 
 // Start the server
-app.listen(3000, '0.0.0.0', () => {
-  console.log('Server is running on port 3000');
+app.listen(port, '0.0.0.0', () => {
+  console.log(`Server is running on port ${port}`);
 });
-
