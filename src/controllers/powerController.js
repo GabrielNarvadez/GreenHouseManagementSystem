@@ -133,7 +133,7 @@ exports.saveMetricData = (req, res) => {
       return res.status(400).send('Invalid timestamp. Please provide a valid date.');
     }
 
-  const sql = 'INSERT INTO system_metrics (metric_type, metric_value, timestamp) VALUES (?, ?)';
+  const sql = 'INSERT INTO system_metrics (metric_type, metric_value, timestamp) VALUES (?, ?, ?)';
   const values = [metric_type, metric_value, providedTimestamp];
 
   db.query(sql, values, (err, result) => {
