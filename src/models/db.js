@@ -5,8 +5,8 @@ const mysql = require('mysql2');
 // Hard-code the database credentials here
 const db = mysql.createConnection({
   host: '127.0.0.1', // DB host
-  user: 'root', // DB user
-  password: 'root', // DB password
+  user: 'gabtheinhinyero', // DB user
+  password: 'gabtheinhinyero', // DB password
   port: '3306',
   database: 'greenhouse_dashboard' // DB name
 });
